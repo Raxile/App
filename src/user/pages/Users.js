@@ -5,8 +5,8 @@ const Users = () => {
   const  USERS = [
     {
     id:"ui",
-    name:"Piyush Saxena",
-    image:"https://w0.peakpx.com/wallpaper/630/316/HD-wallpaper-yash-attitude-bollywood-kannada-kgf-kgf2-movies-rocky-rocky-bhai-style.jpg",
+    name:"Rocking Star Yash",
+    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8P702UfX3COx7FPvYJFUFL49CgZ9MJbbR2A&usqp=CAU",
     places: 4
   }
 ]; 

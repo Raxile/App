@@ -9,7 +9,7 @@ const DUMMY_PLACES =[
     id:'p1',
     title:'Zsquare',
     description:'building',
-    imageUrl:'https://lh5.googleusercontent.com/p/AF1QipP2FqGbyFnzMphR7IyopB7ZbhDqiM2Cweo4-PNI=w408-h544-k-no',
+    imageUrl:'https://yometro.com/images/places/z-square-mall.jpg',
     address:'Mall Rd, Downtown, Kanpur, Uttar Pradesh 208001',
     location:{
       lat:26.4732591,

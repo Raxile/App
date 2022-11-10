@@ -1,0 +1,9 @@
+.map{
+    height: 100%;
+    width: 100%;
+}
+.map img{
+    height: 50vh;
+    width: 48vw;
+    margin: 2px 4px;
+}

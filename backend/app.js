@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose')
 
 const placesRoutes = require('./routes/places-routes');
 const userRoutes  = require('./routes/user-routes');
 const HttpError = require('./models/http-error');
+const url = 'mongodb://localhost:27017/mern?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false';
 
 const app = express();
 
@@ -25,4 +27,11 @@ app.use((error,req,res,next)=>{
     res.json({message:error.message || 'An unknown error occurred!'});
 })
 
-app.listen(5000);
+mongoose.connect(url).then(()=>{
+    app.listen(5000);
+}).catch(
+    (err)=>{
+        console.log(err);
+    }
+)
+

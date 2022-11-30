@@ -6,21 +6,6 @@ const getCordsForAddress = require('../util/location')
 const Place = require('../models/place');
 const User = require('../models/user');
 
-let DUMMY_PLACES =[
-    {
-      id:'p1',
-      title:'Zsquare',
-      description:'building',
-      address:'Mall Rd, Downtown, Kanpur, Uttar Pradesh 208001',
-      location:{
-        lat:26.4732591,
-        lng:80.3528144
-      },
-      creator:'u1'
-  
-    },
-    
-  ];
 
 const getPlaceById = async (req,res,next)=>{
     const placeid = req.params.pid;
@@ -37,7 +22,7 @@ const getPlaceById = async (req,res,next)=>{
          return next(error);
      }
 
-         res.json({ place:place.toObject({ getters:true}) }); // => { place } => {place : place}
+         res.json({ place:place.toObject({ getters:true}) }); 
      
 };
 
@@ -45,18 +30,20 @@ const getPlaceById = async (req,res,next)=>{
 
 const  getPlacesByUserId = async (req,res,next)=>{
     const userid = req.params.uid;
-    let places; 
+   // let places;
+    let usersWithPlaces; 
     try {
-      places = await Place.find({creator:userid});
+      usersWithPlaces = await User.findById(userid).populate('places');
     } catch (err) {
       const error =new HttpError('Something went wrong , could not find a place',500);
       return next(error);
     }
     
-    if(!places || places.length === 0){
+    //if(!places || .places.length === 0){
+    if(!usersWithPlaces || usersWithPlaces.places.length === 0){
         return next(new HttpError('could not find a places for the creater id',404));
       }
-    res.json({places:places.map((p)=>p.toObject({ getters:true })  ) });
+    res.json({places:usersWithPlaces.places.map((p)=>p.toObject({ getters:true })  ) });
 };
 
 const createPlace = async (req,res,next)=>{
@@ -100,7 +87,6 @@ const createPlace = async (req,res,next)=>{
 
    console.log(user);
 
-  //DUMMY_PLACES.push(createdPlace);  //unshift(createdPlace)
   try {
     //const sess = await mongoose.startSession();
     //sess.startTransaction();
@@ -189,4 +175,4 @@ exports.getPlaceById = getPlaceById;
 exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
-exports.deletePlace =deletePlace;
+exports.deletePlace = deletePlace;

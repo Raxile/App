@@ -50,13 +50,13 @@ const signup = async (req,res,next)=>{
         email,
         image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8P702UfX3COx7FPvYJFUFL49CgZ9MJbbR2A&usqp=CAU',
         password,
-        places:'quf487674645'
+        places:[]
     })
 
     try {
         await createUser.save();
     } catch (err) {
-        const error = HttpError('Signing up failed,please try again',500);
+        const error = new HttpError('Signing up failed,please try again',500);
         return next(error);
     }
 

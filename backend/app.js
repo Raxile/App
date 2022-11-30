@@ -6,6 +6,7 @@ const placesRoutes = require('./routes/places-routes');
 const userRoutes  = require('./routes/user-routes');
 const HttpError = require('./models/http-error');
 const url = 'mongodb://localhost:27017/mern?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false';
+//const url = 'mongodb+srv://raxile:EK3aCYJSBBY77cgv@clusterop.c1zvgx2.mongodb.net/places?authSource=admin&replicaSet=atlas-496jqv-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use((error,req,res,next)=>{
 
 mongoose.connect(url).then(()=>{
     app.listen(5000);
+    console.log(`mongo connected successfully`); 
 }).catch(
     (err)=>{
         console.log(err);

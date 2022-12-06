@@ -1,45 +1,54 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React ,{useEffect ,useState}from 'react';
+import { useParams } from 'react-router-dom';
 
-
-import PlaceList from '../components/PlaceList'
-
-const DUMMY_PLACES =[
-  {
-    id:'p1',
-    title:'Zsquare',
-    description:'building',
-    imageUrl:'https://yometro.com/images/places/z-square-mall.jpg',
-    address:'Mall Rd, Downtown, Kanpur, Uttar Pradesh 208001',
-    location:{
-      lat:26.4732591,
-      lng:80.3528144
-    },
-    creator:'u1'
-
-  },
-  {
-    id:'p2',
-    title:'Zsquare',
-    description:'building',
-    imageUrl:'https://lh5.googleusercontent.com/p/AF1QipP2FqGbyFnzMphR7IyopB7ZbhDqiM2Cweo4-PNI=w408-h544-k-no',
-    address:'Mall Rd, Downtown, Kanpur, Uttar Pradesh 208001',
-    location:{
-      lat:26.4732591,
-      lng:80.3528144
-    },
-    creator:'u2'
-
-  },
-
-]
+import PlaceList from '../components/PlaceList';
+import LoadingSpinner from '../../shared/components/UIElement/LoadingSpinner';
+import ErrorModel from '../../shared/components/UIElement/ErrorModel';
 
 const UserPlaces = () => {
-    const userId = useParams().userId;
-    const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId)
-  return (
+  const [isLoading,setIsLoading] = useState(false);
+  const [error,setError] = useState(); 
+    const [loadedPlaces,setLoadedPlaces] = useState()
 
-    <PlaceList items={loadedPlaces}/>
+
+    const userId = useParams().userId;
+
+    useEffect( ()=>{
+
+      const fetchUsers = async ()=>{
+          try {
+            setError(null);
+            const response = await fetch(`http://localhost:5000/api/places/user/${userId}`,{
+              method:'GET',
+              headers:{
+                'Content-Type':'application/json'
+            }
+            });
+             const responseData =await response.json();
+             if(!response.ok){
+              throw new Error(responseData.message)
+           }
+           setIsLoading(false);
+            setLoadedPlaces(responseData.places);
+          } catch (err) {
+            setIsLoading(false);
+            setError(err.message || 'Something went wrong, please try again');
+          }
+        }
+        fetchUsers();
+      },[userId]);
+      
+      const errorHandler = ()=>{
+        setError(null)
+      }
+    
+
+  return (
+    <React.Fragment>
+      <ErrorModel error={error} onClear={errorHandler}/>
+      {isLoading && <div className='center'><LoadingSpinner/></div>}
+    {!isLoading&& loadedPlaces &&<PlaceList items={loadedPlaces}/>}
+    </React.Fragment>
   )
 }
 
